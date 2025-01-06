@@ -1,13 +1,12 @@
 import { useRef, useState } from "react";
 
-const Player = ({ name, symbol, isActive }) => {
+const Player = ({ name, symbol, isActive, onChangeName }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [playerName, setPlayerName] = useState(name);
-  const [tempName, setTempName] = useState(name);
 
   const handleEditClick = () => {
     if (isEditing) {
-      setTempName(name);
+      onChangeName(symbol, playerName);
     }
     setIsEditing((prevState) => !prevState);
   };
@@ -17,8 +16,6 @@ const Player = ({ name, symbol, isActive }) => {
   };
 
   const handleBlur = (e) => {
-    console.log(e.relatedTarget);
-
     if (!e.relatedTarget || e.relatedTarget.tagName !== "BUTTON") {
       setIsEditing(false);
     }
@@ -43,9 +40,7 @@ const Player = ({ name, symbol, isActive }) => {
         {player}
         <span className="player-symbol">{symbol}</span>
       </span>
-      <button onClick={handleEditClick}>
-        {isEditing && tempName !== playerName ? "Save" : "Edit"}
-      </button>
+      <button onClick={handleEditClick}>{isEditing ? "Save" : "Edit"}</button>
     </li>
   );
 };
